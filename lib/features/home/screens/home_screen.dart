@@ -245,6 +245,10 @@ class HomeScreen extends StatelessWidget {
         onTap: (index) {
           if (index == 1) {
             Navigator.pushNamed(context, AppRoutes.products);
+          } else if (index == 2) {
+            Navigator.pushNamed(context, AppRoutes.cart);
+          } else if (index == 3) {
+            Navigator.pushNamed(context, AppRoutes.profile);
           }
         },
         items: const [
