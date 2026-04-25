@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/home/screens/home_screen.dart';
+import '../../features/main/screens/main_screen.dart';
 import '../../features/products/screens/product_list_screen.dart';
 import '../../features/products/screens/product_details_screen.dart';
 import '../../features/cart/screens/cart_screen.dart';
@@ -22,7 +23,7 @@ class AppRoutes {
     return {
       login: (context) => const LoginScreen(),
       register: (context) => const RegisterScreen(),
-      home: (context) => const HomeScreen(),
+      home: (context) => const MainScreen(),
       products: (context) => const ProductListScreen(),
       productDetails: (context) => const ProductDetailsScreen(),
       cart: (context) => const CartScreen(),

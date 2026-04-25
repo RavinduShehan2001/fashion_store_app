@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.home);
+                  Navigator.pushReplacementNamed(context, AppRoutes.home);
                 },
                 child: const Text(
                   'Login',
