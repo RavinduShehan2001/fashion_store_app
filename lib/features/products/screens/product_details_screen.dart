@@ -103,7 +103,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         bottomLeft: Radius.circular(40),
                         bottomRight: Radius.circular(40),
                       ),
-                      child: Image.network(
+                      child: Image.asset(
                         image,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {

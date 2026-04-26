@@ -22,32 +22,32 @@ class _ProductListScreenState extends State<ProductListScreen> {
       {
         'name': 'Casual T-Shirt',
         'price': '\$25',
-        'image': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+        'image': 'assets/images/products/tshirt.png',
       },
       {
         'name': 'Stylish Jacket',
         'price': '\$60',
-        'image': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f',
+        'image': 'assets/images/products/jacket.png',
       },
       {
         'name': 'Women Handbag',
         'price': '\$40',
-        'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3',
+        'image': 'assets/images/products/handbag.jpg',
       },
       {
         'name': 'Sneakers',
         'price': '\$55',
-        'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+        'image': 'assets/images/products/nike.jpg',
       },
       {
         'name': 'Denim Shirt',
         'price': '\$35',
-        'image': 'https://images.unsplash.com/photo-1603252109303-2751441dd157',
+        'image': 'assets/images/products/tshirt.png',
       },
       {
         'name': 'Classic Watch',
         'price': '\$80',
-        'image': 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49',
+        'image': 'assets/images/products/handbag.jpg',
       },
     ];
 
@@ -226,7 +226,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  Image.network(
+                                  Image.asset(
                                     product['image']!,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {

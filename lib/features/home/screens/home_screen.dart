@@ -23,22 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
       {
         'name': 'Casual T-Shirt',
         'price': '\$25',
-        'image': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+        'image': 'assets/images/products/tshirt.png',
       },
       {
         'name': 'Stylish Jacket',
         'price': '\$60',
-        'image': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f',
+        'image': 'assets/images/products/jacket.png',
       },
       {
         'name': 'Women Handbag',
         'price': '\$40',
-        'image': 'https://images.unsplash.com/photo-1584917865442-de89df76afd3',
+        'image': 'assets/images/products/handbag.jpg',
       },
       {
         'name': 'Sneakers',
         'price': '\$55',
-        'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+        'image': 'assets/images/products/nike.jpg',
       },
     ];
 
@@ -53,10 +53,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: Icon(
-          Icons.hexagon_outlined, 
-          color: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
-          size: 28,
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            'assets/images/logo.png',
+            fit: BoxFit.contain,
+          ),
         ).animate().fade(duration: 500.ms).scale(),
         title: const Text(
           'N E X U S',
@@ -164,71 +166,22 @@ class _HomeScreenState extends State<HomeScreen> {
               // Promotional Banner
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: isDark 
-                        ? [AppColors.darkPrimary.withOpacity(0.8), AppColors.darkAccent.withOpacity(0.8)]
-                        : [AppColors.lightPrimary, AppColors.lightAccent],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: isDark ? AppColors.darkPrimary.withOpacity(0.3) : AppColors.lightPrimary.withOpacity(0.3),
+                      color: isDark ? Colors.black.withOpacity(0.3) : Colors.grey.withOpacity(0.3),
                       blurRadius: 15,
                       offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'New Collection',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Discount 50% for the first transaction',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
-                              minimumSize: const Size(120, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              elevation: 0,
-                            ),
-                            child: const Text('Shop Now'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    // Adding a decorative icon on the right side of the banner
-                    Icon(
-                      Icons.local_mall,
-                      size: 80,
-                      color: Colors.white.withOpacity(0.2),
-                    ),
-                  ],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: Image.asset(
+                    'assets/images/offer_image.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ).animate().fade(duration: 600.ms, delay: 200.ms).scale(begin: const Offset(0.95, 0.95)),
 
@@ -389,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  Image.network(
+                                  Image.asset(
                                     product['image']!,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {

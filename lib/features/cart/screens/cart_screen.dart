@@ -18,14 +18,14 @@ class _CartScreenState extends State<CartScreen> {
       'name': 'Casual T-Shirt',
       'price': 25.0,
       'quantity': 1,
-      'image': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+      'image': 'assets/images/products/tshirt.png',
     },
     {
       'id': '2',
       'name': 'Sneakers',
       'price': 55.0,
       'quantity': 1,
-      'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+      'image': 'assets/images/products/nike.jpg',
     },
   ];
 
@@ -134,7 +134,7 @@ class _CartScreenState extends State<CartScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image.network(
+                                child: Image.asset(
                                   item['image'],
                                   width: 85,
                                   height: 85,

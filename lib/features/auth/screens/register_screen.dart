@@ -28,11 +28,11 @@ class RegisterScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              const Center(
-                child: Icon(
-                  Icons.person_add_alt_1_outlined,
-                  size: 60,
-                  color: AppColors.primary,
+              Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 60,
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 16),
