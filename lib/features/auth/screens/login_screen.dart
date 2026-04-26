@@ -23,11 +23,11 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              const Center(
-                child: Icon(
-                  Icons.shopping_bag_outlined,
-                  size: 70,
-                  color: AppColors.primary,
+              Center(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 70,
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 20),
@@ -87,14 +87,58 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.home);
+                  Navigator.pushReplacementNamed(context, AppRoutes.home);
                 },
                 child: const Text(
                   'Login',
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  Expanded(child: Divider(color: AppColors.textSecondary.withOpacity(0.2))),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'OR CONNECT WITH',
+                      style: TextStyle(
+                        color: AppColors.textSecondary.withOpacity(0.5),
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: AppColors.textSecondary.withOpacity(0.2))),
+                ],
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.inputFill,
+                    foregroundColor: AppColors.textPrimary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    elevation: 0,
+                  ),
+                  icon: Image.network(
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.png/768px-Google_%22G%22_logo.png',
+                    height: 20,
+                    errorBuilder: (context, error, stackTrace) => const Icon(Icons.g_mobiledata, color: Colors.white, size: 24),
+                  ),
+                  label: const Text(
+                    'Google',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -106,7 +150,7 @@ class LoginScreen extends StatelessWidget {
                     child: const Text(
                       'Register',
                       style: TextStyle(
-                        color: AppColors.accent,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
