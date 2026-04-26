@@ -150,7 +150,7 @@ class LoginScreen extends StatelessWidget {
                     child: const Text(
                       'Register',
                       style: TextStyle(
-                        color: AppColors.accent,
+                        color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
