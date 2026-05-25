@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
+import '../../../models/product_model.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key});
@@ -28,11 +29,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     final product =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>?;
+        ModalRoute.of(context)!.settings.arguments as ProductModel?;
 
-    final String name = product?['name'] ?? 'Product Name';
-    final String price = product?['price'] ?? '\$0';
-    final String image = product?['image'] ?? '';
+    final String name = product?.name ?? 'Product Name';
+    final String price = product?.price ?? '\$0';
+    final String image = product?.image ?? '';
+    final String description = product?.description ??
+        'This fashion item is designed with modern style and comfort. '
+        'It is suitable for casual wear, daily use, and stylish outings. '
+        'Experience the future of fashion today with premium materials and sleek aesthetics.';
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -163,9 +168,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       const SizedBox(height: 12),
 
                       Text(
-                        'This fashion item is designed with modern style and comfort. '
-                        'It is suitable for casual wear, daily use, and stylish outings. '
-                        'Experience the future of fashion today with premium materials and sleek aesthetics.',
+                        description,
                         style: TextStyle(
                           fontSize: 15,
                           height: 1.6,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_sizes.dart';
-import '../../../core/routes/app_routes.dart';
+import '../../../widgets/product_card.dart';
+import '../../../data/dummy_products.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -18,38 +18,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    final List<Map<String, String>> products = [
-      {
-        'name': 'Casual T-Shirt',
-        'price': '\$25',
-        'image': 'assets/images/products/tshirt.png',
-      },
-      {
-        'name': 'Stylish Jacket',
-        'price': '\$60',
-        'image': 'assets/images/products/jacket.png',
-      },
-      {
-        'name': 'Women Handbag',
-        'price': '\$40',
-        'image': 'assets/images/products/handbag.jpg',
-      },
-      {
-        'name': 'Sneakers',
-        'price': '\$55',
-        'image': 'assets/images/products/nike.jpg',
-      },
-      {
-        'name': 'Denim Shirt',
-        'price': '\$35',
-        'image': 'assets/images/products/tshirt.png',
-      },
-      {
-        'name': 'Classic Watch',
-        'price': '\$80',
-        'image': 'assets/images/products/handbag.jpg',
-      },
-    ];
+
 
     final List<Map<String, dynamic>> categories = [
       {'name': 'All', 'icon': Icons.grid_view},
@@ -182,7 +151,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             
             Expanded(
               child: GridView.builder(
-                itemCount: products.length,
+                itemCount: dummyProducts.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 16,
@@ -190,104 +159,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   childAspectRatio: 0.65,
                 ),
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = dummyProducts[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.productDetails,
-                        arguments: product,
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: isDark 
-                                ? Colors.black.withOpacity(0.3) 
-                                : Colors.grey.withOpacity(0.08),
-                            blurRadius: 15,
-                            spreadRadius: 2,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(20),
-                              ),
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  Image.asset(
-                                    product['image']!,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.grey.shade800,
-                                        child: const Center(
-                                          child: Icon(Icons.image_not_supported),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(6),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.9),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.favorite_border,
-                                        size: 16,
-                                        color: Colors.grey.shade800,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(14),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product['name']!,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  product['price']!,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ).animate().fade(duration: 600.ms, delay: (200 + (index * 50)).ms).slideY(begin: 0.1);
+                  return ProductCard(product: product)
+                      .animate()
+                      .fade(duration: 600.ms, delay: (200 + (index * 50)).ms)
+                      .slideY(begin: 0.1);
                 },
               ),
             ),
