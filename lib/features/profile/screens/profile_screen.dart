@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
 import '../../../core/routes/app_routes.dart';
+import '../../auth/services/auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -10,6 +11,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final user = AuthService().currentUser;
+    final displayName = user?.displayName ?? 'Ravindu Shehan';
+    final email = user?.email ?? 'ravindu@example.com';
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
             ).animate().fade(duration: 500.ms).scale(begin: const Offset(0.8, 0.8)),
             const SizedBox(height: 16),
             Text(
-              'Ravindu Shehan',
+              displayName,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -39,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
             ).animate().fade(duration: 500.ms, delay: 100.ms),
             const SizedBox(height: 6),
             Text(
-              'ravindu@example.com',
+              email,
               style: TextStyle(
                 color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
               ),
@@ -58,12 +62,15 @@ class ProfileScreen extends StatelessWidget {
             const Spacer(),
 
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.login,
-                  (route) => false,
-                );
+              onPressed: () async {
+                await AuthService().logout();
+                if (context.mounted) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.login,
+                    (route) => false,
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 55),
