@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../widgets/product_card.dart';
-import '../../../data/dummy_products.dart';
+import '../../../models/product_model.dart';
+import '../services/product_service.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -150,21 +151,51 @@ class _ProductListScreenState extends State<ProductListScreen> {
             const SizedBox(height: 24),
             
             Expanded(
-              child: GridView.builder(
-                itemCount: dummyProducts.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.65,
-                ),
-                itemBuilder: (context, index) {
-                  final product = dummyProducts[index];
+              child: FutureBuilder<List<ProductModel>>(
+                future: ProductService().getProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-                  return ProductCard(product: product)
-                      .animate()
-                      .fade(duration: 600.ms, delay: (200 + (index * 50)).ms)
-                      .slideY(begin: 0.1);
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Failed to load products',
+                        style: TextStyle(
+                          color: isDark ? Colors.red.shade400 : Colors.red.shade700,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }
+
+                  final products = snapshot.data ?? [];
+                  if (products.isEmpty) {
+                    return const Center(
+                      child: Text('No products available'),
+                    );
+                  }
+
+                  return GridView.builder(
+                    itemCount: products.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+
+                      return ProductCard(product: product)
+                          .animate()
+                          .fade(duration: 600.ms, delay: (200 + (index * 50)).ms)
+                          .slideY(begin: 0.1);
+                    },
+                  );
                 },
               ),
             ),

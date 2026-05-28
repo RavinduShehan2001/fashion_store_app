@@ -5,6 +5,7 @@ import '../../../core/constants/app_sizes.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/routes/app_routes.dart';
 import '../services/auth_service.dart';
+import '../../profile/services/user_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -61,7 +62,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      await _authService.register(email, password);
+      final credential = await _authService.register(email, password);
+      final uid = credential.user?.uid;
+      
+      if (uid != null) {
+        final userService = UserService();
+        await userService.createUserProfile(
+          uid: uid,
+          name: name,
+          email: email,
+        );
+      }
+      
       // Update display name for visual customization in the app
       await FirebaseAuth.instance.currentUser?.updateDisplayName(name);
 

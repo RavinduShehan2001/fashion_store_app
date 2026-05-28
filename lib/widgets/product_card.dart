@@ -53,18 +53,31 @@ class ProductCard extends StatelessWidget {
                   children: [
                     Hero(
                       tag: product.image,
-                      child: Image.asset(
-                        product.image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey.shade800,
-                            child: const Center(
-                              child: Icon(Icons.image_not_supported),
+                      child: product.image.startsWith('http://') || product.image.startsWith('https://')
+                          ? Image.network(
+                              product.image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey.shade800,
+                                  child: const Center(
+                                    child: Icon(Icons.image_not_supported),
+                                  ),
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              product.image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey.shade800,
+                                  child: const Center(
+                                    child: Icon(Icons.image_not_supported),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                     Positioned(
                       top: 10,

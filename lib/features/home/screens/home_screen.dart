@@ -4,7 +4,8 @@ import '../../../../main.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/routes/app_routes.dart';
 import '../../../widgets/product_card.dart';
-import '../../../data/dummy_products.dart';
+import '../../../models/product_model.dart';
+import '../../products/services/product_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -275,23 +276,64 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               
               // Featured Products Grid
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: dummyFeaturedProducts.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.65,
-                ),
-                itemBuilder: (context, index) {
-                  final product = dummyFeaturedProducts[index];
+              FutureBuilder<List<ProductModel>>(
+                future: ProductService().getProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
 
-                  return ProductCard(product: product)
-                      .animate()
-                      .fade(duration: 600.ms, delay: (600 + (index * 100)).ms)
-                      .slideY(begin: 0.2);
+                  if (snapshot.hasError) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Text(
+                          'Failed to load products',
+                          style: TextStyle(
+                            color: isDark ? Colors.red.shade400 : Colors.red.shade700,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+
+                  final products = snapshot.data ?? [];
+                  if (products.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Text('No products available'),
+                      ),
+                    );
+                  }
+
+                  final featured = products.take(4).toList();
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: featured.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemBuilder: (context, index) {
+                      final product = featured[index];
+
+                      return ProductCard(product: product)
+                          .animate()
+                          .fade(duration: 600.ms, delay: (600 + (index * 100)).ms)
+                          .slideY(begin: 0.2);
+                    },
+                  );
                 },
               ),
               const SizedBox(height: 20),

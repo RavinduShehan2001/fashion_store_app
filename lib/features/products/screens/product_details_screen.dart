@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
+import '../../../core/routes/app_routes.dart';
 import '../../../models/product_model.dart';
+import '../../cart/services/cart_service.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key});
@@ -108,18 +110,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         bottomLeft: Radius.circular(40),
                         bottomRight: Radius.circular(40),
                       ),
-                      child: Image.asset(
-                        image,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(
-                              Icons.image_not_supported,
-                              size: 50,
+                      child: image.startsWith('http://') || image.startsWith('https://')
+                          ? Image.network(
+                              image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 50,
+                                  ),
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              image,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 50,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ).animate().fade(duration: 600.ms),
@@ -340,31 +355,46 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ],
               ),
               child: ElevatedButton.icon(
-                onPressed: () {
-                  // Show custom success dialog or snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(Icons.check_circle, color: isDark ? AppColors.darkPrimary : AppColors.lightPrimary),
-                          const SizedBox(width: 12),
-                          const Text('Added to Cart Successfully!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                      backgroundColor: Colors.black87,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      action: SnackBarAction(
-                        label: 'VIEW',
-                        textColor: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/cart');
-                        },
-                      ),
-                    ),
-                  );
+                onPressed: () async {
+                  if (product != null) {
+                    try {
+                      await CartService().addToCart(product);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              children: [
+                                Icon(Icons.check_circle, color: isDark ? AppColors.darkPrimary : AppColors.lightPrimary),
+                                const SizedBox(width: 12),
+                                const Text('Added to Cart Successfully!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            backgroundColor: Colors.black87,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            action: SnackBarAction(
+                              label: 'VIEW',
+                              textColor: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.cart);
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Failed to add to cart: $e'),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isDark ? AppColors.darkPrimary : AppColors.lightPrimary,
